@@ -6,6 +6,8 @@ require 'securerandom' # uuid
 set :environment, :development
 
 get '/memos' do
+  @memos = File.open("memos.json") { |f| JSON.load(f) }
+
   erb :index
 end
 

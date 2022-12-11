@@ -1,0 +1,7 @@
+<h2>メモ一覧</h2>
+  <p><a href="/memos/new">追加</a>
+  <% @memos["memos"].each do |memo| %>
+    <ul>
+      <li><a href="http://localhost:4567/memos/<%= memo["id"] %>"><%= memo["title"] %></a></li>
+    </ul>
+  <% end %>
