@@ -29,32 +29,26 @@ end
 
 get '/memos/:id' do
   memos = File.open("memos.json") { |f| JSON.load(f) }
-  @memo = memos["memos"].find {|memo| memo["id"] == "#{params[:id]}" }
+  @memo = memos["memos"].find {|memo| memo["id"] == "#{escape_html(params[:id])}" }
 
   erb :show
 end
 
 get '/memos/:id/edit' do
   memos = File.open("memos.json") { |f| JSON.load(f) }
-  @memo = memos["memos"].find { |memo| memo["id"] == "#{params[:id]}" }
+  @memo = memos["memos"].find { |memo| memo["id"] == "#{escape_html(params[:id])}" }
 
   erb :edit
 end
 
 patch '/memos/edit' do
-  title = params[:title]
-  content = params[:content]
-  id = params[:id]
+  title = "#{escape_html(params[:title])}"
+  content = "#{escape_html(params[:content])}"
+  id = "#{escape_html(params[:id])}"
 
   memos = File.open("memos.json") { |f| JSON.load(f) }
   edited_data = { "id" => id, "title" => title, "content" => content }
-  memos["memos"].map! do |memo|
-    if memo["id"] == id
-      edited_data
-    else
-      memo
-    end
-  end
+  memos["memos"].map! { |memo| memo["id"] == id ? edited_data : memo }
   File.open("memos.json", "w") { |f| JSON.dump(memos, f) }
 
   redirect '/memos'
@@ -62,7 +56,7 @@ end
 
 delete '/memos/del' do
   memos = File.open("memos.json") { |f| JSON.load(f) }
-  memo_index = memos["memos"].index {|memo| memo["id"] == "#{params[:id]}" }
+  memo_index = memos["memos"].index {|memo| memo["id"] == "#{escape_html(params[:id])}" }
   memos["memos"].delete_at(memo_index) # .destroyができなかったのでrubyでmemos[]から削除。
   File.open("memos.json", "w") { |f| JSON.dump(memos, f) }
 
