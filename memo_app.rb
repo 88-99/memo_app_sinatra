@@ -24,7 +24,7 @@ namespace '/memos' do
     content = escape_html(params[:content]).to_s
     id = SecureRandom.uuid
 
-    memos = File.open('memos.json') { |f| JSON.parse(f.read) }
+    memos = File.open('memos.json') { |f| JSON.parse(f.read) } # 重複を避けるために before do でまとめた場合、インスタンス変数(@memos)は増える。それが良いのか不明。
     memos['memos'] << { 'id' => id, 'title' => title, 'content' => content }
     File.open('memos.json', 'w') { |f| JSON.dump(memos, f) }
 
