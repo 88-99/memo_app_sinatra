@@ -12,6 +12,11 @@
     <%= @memo["content"] %>
   </div>
 
+  <form method="get" action="/memos/<%= @memo["id"] %>/edit">
+    <input type="hidden" name="id" value="<%= @memo["id"] %>">
+    <input type="submit" value="編集">
+  </form>
+
   <form method="post" action="/memos/del">
     <input type="hidden" name="id" value="<%= @memo["id"] %>">
     <input type="hidden" name="_method" value="delete">

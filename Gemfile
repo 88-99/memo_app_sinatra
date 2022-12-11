@@ -2,6 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "sinatra"
-gem "webrick"
+gem 'byebug'
+gem 'debug'
+gem 'sinatra'
 gem 'sinatra-contrib'
+gem 'webrick'
