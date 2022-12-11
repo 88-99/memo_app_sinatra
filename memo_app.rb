@@ -33,3 +33,12 @@ get '/memos/:id' do
 
   erb :show
 end
+
+delete '/memos/del' do
+  memos = File.open("memos.json") { |f| JSON.load(f) }
+  memo_index = memos["memos"].index {|memo| memo["id"] == "#{params[:id]}" }
+  memos["memos"].delete_at(memo_index) # .destroyができなかったのでrubyでmemos[]から削除。
+  File.open("memos.json", "w") { |f| JSON.dump(memos, f) }
+
+  redirect '/memos'
+end
