@@ -1,23 +1,27 @@
 <div>
   タイトル
 </div>
-<div>
+<div class="box_title">
   <%= @memo["title"] %>
 </div>
 <div>
   本文
 </div>
-<div>
+<div class="box_content">
   <%= @memo["content"] %>
 </div>
 
 <form method="get" action="/memos/<%= @memo["id"] %>/edit">
   <input type="hidden" name="id" value="<%= @memo["id"] %>">
-  <input type="submit" value="編集">
+  <div class="button">
+    <input type="submit" value="編集">
+  </div>
 </form>
 
 <form method="post" action="/memos/del">
   <input type="hidden" name="id" value="<%= @memo["id"] %>">
   <input type="hidden" name="_method" value="delete">
-  <input type="submit" value="削除">
+  <div class="button">
+    <input type="submit" value="削除">
+  </div>
 </form>

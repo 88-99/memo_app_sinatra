@@ -2,17 +2,16 @@
   <div>
     タイトル
   </div>
-  <div>
-    <input type="hidden" name="_method" value="patch">
-    <input type="text" name="title" value="<%= @memo["title"] %>">
-  </div>
+  <input type="hidden" name="_method" value="patch">
+  <input type="text" name="title" value="<%= @memo["title"] %>" class="box_title" placeholder="タイトルを入力してください">
+
   <div>
     本文
   </div>
-  <div>
-    <textarea name="content"><%= @memo["content"] %></textarea>
-  </div>
+  <textarea name="content" class="box_content" placeholder="内容を入力してください"><%= @memo["content"] %></textarea>
   <input type="hidden" name="_method" value="patch">
   <input type="hidden" name="id" value="<%= @memo["id"] %>">
-  <input type="submit" value="保存">
+  <div class="button">
+    <input type="submit" value="保存">
+  </div>
 </form>
