@@ -5,6 +5,7 @@ require 'sinatra/reloader'
 require 'json'
 require 'securerandom' # uuid
 require 'sinatra/namespace'
+require 'byebug'
 
 set :environment, :development
 
@@ -28,7 +29,13 @@ namespace '/memos' do
     memos['memos'] << { 'id' => id, 'title' => title, 'content' => content }
     File.open('memos.json', 'w') { |f| JSON.dump(memos, f) }
 
-    redirect '/memos'
+    if [title, content].any?(&:empty?) || title.length > 30 || content.length > 1000
+      # (title || content).empty? では、(title = "123") && (content = "")でfalseになり機能しない。
+      error_id = memos['memos'].last['id']
+      redirect "/memos/#{error_id}/edit"
+    else
+      redirect '/memos'
+    end
   end
 
   get '/:id' do
@@ -55,7 +62,11 @@ namespace '/memos' do
     memos['memos'].map! { |memo| memo['id'] == id ? edited_data : memo }
     File.open('memos.json', 'w') { |f| JSON.dump(memos, f) }
 
-    redirect '/memos'
+    if [title, content].any?(&:empty?) || title.length > 30 || content.length > 1000
+      redirect "/memos/#{id}/edit"
+    else
+      redirect '/memos'
+    end
   end
 
   delete '/del' do

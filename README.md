@@ -12,4 +12,4 @@ $ bundle install</br>
 ### 4. ファイルを実行</br>
 $ bundle exec ruby memo_app.rb</br>
 </br>
-### 5. http://localhost:4567/memosにアクセスする</br>
+### 5. http://localhost:4567/memos にアクセスする</br>
