@@ -10,6 +10,7 @@ require 'byebug'
 
 set :environment, :development
 
+helpers Helper
 namespace '/memos' do # RuBocopより、 Block has too many lines. [39/25] namespace '/memos' do ... と指摘されており未解決。
   get '' do
     @memos = File.open('memos.json') { |f| JSON.parse(f.read) }
@@ -25,9 +26,8 @@ namespace '/memos' do # RuBocopより、 Block has too many lines. [39/25] names
     memos = File.open('memos.json') { |f| JSON.parse(f.read) } # 重複を避けるために before do でまとめた場合、インスタンス変数(@memos)は増える。それが良いのか不明。
     memos['memos'] << { 'id' => id, 'title' => title, 'content' => content }
     json_dump(memos)
-    validate(title, content, id) # 入力情報を検証しているが、
-    # 一度入力した情報を消さないままエラーメッセージを表示するロジックを考えられていないため、一度保存する流れになっている。検証した意味が今のところない。
-    # 保存してバリデーションに引っかかると/memos/:id/editに遷移する。
+    validate(title, content, id) # 入力情報を検証していますが、情報は保存され /memos/:id/edit に遷移します。
+    # 一度入力した情報を消さないままエラーメッセージを表示することが実現できていないため。
   end
 
   get '/:id' do
@@ -48,7 +48,8 @@ namespace '/memos' do # RuBocopより、 Block has too many lines. [39/25] names
     edited_data = { 'id' => id, 'title' => title, 'content' => content }
     memos['memos'].map! { |memo| memo['id'] == id ? edited_data : memo }
     json_dump(memos)
-    validate(title, content, id) # 保存してバリデーションに引っかかると/memos/:id/editに遷移する。
+    validate(title, content, id) # 入力情報を検証していますが、情報は保存され /memos/:id/edit に遷移します。
+    # 一度入力した情報を消さないままエラーメッセージを表示することが実現できていないため。
   end
 
   delete '/del' do

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Helper
-  def escape_html
+  def escape_html(text)
     Rack::Utils.escape_html(text)
   end
 
