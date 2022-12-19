@@ -11,13 +11,10 @@
   <%= @memo["content"] %>
 </div>
 
-<form method="get" action="/memos/<%= @memo["id"] %>/edit">
-  <input type="hidden" name="id" value="<%= @memo["id"] %>">
-  <div class="button">
-    <input type="submit" value="編集">
-  </div>
-</form>
-
+<div class="link">
+  <a href="http://localhost:4567/memos/<%= @memo["id"] %>/edit">編集</a>
+  <a href="http://localhost:4567/memos">戻る</a>
+</div>
 <form method="post" action="/memos/del">
   <input type="hidden" name="id" value="<%= @memo["id"] %>">
   <input type="hidden" name="_method" value="delete">

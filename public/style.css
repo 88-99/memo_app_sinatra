@@ -171,3 +171,7 @@ textarea {
     justify-content: center;
     margin: 20px;
 }
+
+.link {
+    text-align: center;
+}
