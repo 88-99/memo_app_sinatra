@@ -6,9 +6,7 @@ module Helper
   end
 
   def recieve_params(title, content, id)
-    title = escape_html(title).to_s
-    content = escape_html(content).to_s
-    id = id.nil? ? SecureRandom.uuid : escape_html(id).to_s
+    id = id.nil? ? SecureRandom.uuid : id
     [title, content, id]
   end
 
