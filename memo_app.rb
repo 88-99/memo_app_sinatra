@@ -57,7 +57,7 @@ patch '/memos/edit' do
   end
 end
 
-delete '/memos/del' do
+delete '/memos/:id/del' do
   memos = read_file
   memo_index = memos['memos'].index { |memo| memo['id'] == params[:id] }
   memos['memos'].delete_at(memo_index) # .destroyができなかったのでrubyでmemos[]から削除。
