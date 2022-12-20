@@ -2,13 +2,13 @@
   タイトル
 </div>
 <div class="box_title">
-  <%= @memo["title"] %>
+  <%= escape_html(@memo["title"]) %>
 </div>
 <div>
   本文
 </div>
 <div class="box_content">
-  <%= @memo["content"] %>
+  <%= escape_html(@memo["content"]) %>
 </div>
 
 <div class="link">

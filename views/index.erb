@@ -1,6 +1,6 @@
 <a href="/memos/new" class="button">追加</a>
 <% @memos["memos"].each do |memo| %>
   <ul>
-    <li><p><a href="http://localhost:4567/memos/<%= memo["id"] %>"><%= memo["title"] %></a></p></li>
+    <li><p><a href="http://localhost:4567/memos/<%= memo["id"] %>"><%= escape_html(memo["title"]) %></a></p></li>
   </ul>
 <% end %>

@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 module Helper
-  def escape_html(text)
-    Rack::Utils.escape_html(text)
-  end
-
   def recieve_params(title, content, id)
     id = id.nil? ? SecureRandom.uuid : id
     [title, content, id]

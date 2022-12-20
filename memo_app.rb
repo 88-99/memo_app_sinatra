@@ -4,7 +4,6 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require 'securerandom' # uuid
-require 'sinatra/namespace'
 require_relative 'helpers/helpers.rb'
 require 'byebug'
 
@@ -31,7 +30,7 @@ helpers Helper
 
   get '/memos/:id' do
     memos = File.open('memos.json') { |f| JSON.parse(f.read) }
-    @memo = memos['memos'].find { |memo| memo['id'] == escape_html(params[:id]).to_s }
+    @memo = memos['memos'].find { |memo| memo['id'] == params[:id] }
     erb :show
   end
 
