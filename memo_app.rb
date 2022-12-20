@@ -24,8 +24,12 @@ post '/memos/posts' do
   memos = File.open('memos.json') { |f| JSON.parse(f.read) } # 重複を避けるために before do でまとめた場合、インスタンス変数(@memos)は増える。それが良いのか不明。
   memos['memos'] << { id:, title:, content: }
   json_dump(memos)
-  validate(title, content, id) # 入力情報を検証していますが、情報は保存され /memos/:id/edit に遷移します。
-  # 一度入力した情報を消さないままエラーメッセージを表示することが実現できていないため。
+  if validate(title, content)
+    redirect "/memos/#{id}/edit" # 入力情報を検証していますが、情報は保存され /memos/:id/edit に遷移します。
+  else                           # 一度入力した情報を消さないままエラーメッセージを表示することが実現できていないため。
+    redirect '/memos'
+  end
+  # validate(title, content, id) ? redirect "/memos/#{id}/edit" : redirect '/memos' # 三項演算子が使えませんでした。
 end
 
 get '/memos/:id' do
@@ -46,8 +50,11 @@ patch '/memos/edit' do
   edited_data = { id:, title:, content: }
   memos['memos'].map! { |memo| memo['id'] == id ? edited_data : memo }
   json_dump(memos)
-  validate(title, content, id) # 入力情報を検証していますが、情報は保存され /memos/:id/edit に遷移します。
-  # 一度入力した情報を消さないままエラーメッセージを表示することが実現できていないため。
+  if validate(title, content)
+    redirect "/memos/#{id}/edit" # 入力情報を検証していますが、情報は保存され /memos/:id/edit に遷移します。
+  else                           # 一度入力した情報を消さないままエラーメッセージを表示することが実現できていないため。
+    redirect '/memos'
+  end
 end
 
 delete '/memos/del' do

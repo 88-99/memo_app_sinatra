@@ -6,12 +6,11 @@ module Helper
     [title, content, id]
   end
 
-  def validate(title, content, id)
+  def validate(title, content)
     if [title, content].any?(&:empty?) || title.length > 30 || content.length > 1000
-      # (title || content).empty? では、(title = "123") && (content = "")でfalseになり機能しない。
-      redirect "/memos/#{id}/edit"
+      true
     else
-      redirect '/memos'
+      false
     end
   end
 
