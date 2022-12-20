@@ -14,6 +14,10 @@ module Helper
     end
   end
 
+  def read_file
+    File.open('memos.json') { |f| JSON.parse(f.read) }
+  end
+
   def json_dump(memos)
     File.open('memos.json', 'w') { |f| JSON.dump(memos, f) }
   end

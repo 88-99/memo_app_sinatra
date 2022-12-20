@@ -11,7 +11,7 @@ set :environment, :development
 
 helpers Helper
 get '/memos' do
-  @memos = File.open('memos.json') { |f| JSON.parse(f.read) }
+  @memos = read_file
   erb :index
 end
 
@@ -21,7 +21,7 @@ end
 
 post '/memos/posts' do
   title, content, id = recieve_params(params[:title], params[:content], params[:id])
-  memos = File.open('memos.json') { |f| JSON.parse(f.read) } # 重複を避けるために before do でまとめた場合、インスタンス変数(@memos)は増える。それが良いのか不明。
+  memos = read_file
   memos['memos'] << { id:, title:, content: }
   json_dump(memos)
   if validate(title, content)
@@ -33,20 +33,20 @@ post '/memos/posts' do
 end
 
 get '/memos/:id' do
-  memos = File.open('memos.json') { |f| JSON.parse(f.read) }
+  memos = read_file
   @memo = memos['memos'].find { |memo| memo['id'] == params[:id] }
   erb :show
 end
 
 get '/memos/:id/edit' do
-  memos = File.open('memos.json') { |f| JSON.parse(f.read) }
+  memos = read_file
   @memo = memos['memos'].find { |memo| memo['id'] == params[:id] }
   erb :edit
 end
 
 patch '/memos/edit' do
   title, content, id = recieve_params(params[:title], params[:content], params[:id])
-  memos = File.open('memos.json') { |f| JSON.parse(f.read) }
+  memos = read_file
   edited_data = { id:, title:, content: }
   memos['memos'].map! { |memo| memo['id'] == id ? edited_data : memo }
   json_dump(memos)
@@ -58,7 +58,7 @@ patch '/memos/edit' do
 end
 
 delete '/memos/del' do
-  memos = File.open('memos.json') { |f| JSON.parse(f.read) }
+  memos = read_file
   memo_index = memos['memos'].index { |memo| memo['id'] == params[:id] }
   memos['memos'].delete_at(memo_index) # .destroyができなかったのでrubyでmemos[]から削除。
   json_dump(memos)
