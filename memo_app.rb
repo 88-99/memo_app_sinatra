@@ -4,7 +4,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require 'securerandom' # uuid
-require 'sinatra/namespace' # uuid
+require 'sinatra/namespace'
 require_relative 'helpers/helpers'
 require 'byebug'
 
@@ -31,7 +31,6 @@ namespace '/memos' do
     else                           # 一度入力した情報を消さないままエラーメッセージを表示することが実現できていないため。
       redirect '/memos'
     end
-    # validate(title, content, id) ? redirect "/memos/#{id}/edit" : redirect '/memos' # 三項演算子が使えませんでした。
   end
 
   get '/:id' do
