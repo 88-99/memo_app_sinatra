@@ -16,7 +16,7 @@
   <a href="http://localhost:4567/memos">戻る</a>
 </div>
 
-<form method="post" action="/memos/<%= @memo["id"] %>/del">
+<form method="post" action="/memos/<%= @memo["id"] %>">
   <input type="hidden" name="_method" value="delete">
   <div class="button">
     <input type="submit" value="削除">
