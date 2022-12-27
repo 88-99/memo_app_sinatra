@@ -23,6 +23,7 @@ namespace '/memos' do
 
   post '' do
     id = SecureRandom.uuid
+    Memo.new(params[:title], params[:content])
     memos = File.open('memos.json') { |f| JSON.parse(f.read) }
     memos['memos'] << { id:, title: params[:title], content: params[:content] }
     File.open('memos.json', 'w') { |f| JSON.dump(memos, f) }
