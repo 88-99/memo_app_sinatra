@@ -11,19 +11,6 @@ require 'debug'
 
 set :environment, :development
 
-# def json_to_ruby
-#   File.open('memos.json') { |f| JSON.parse(f.read) }
-# end
-
-def write_file(memos)
-  File.open('memos.json', 'w') { |f| JSON.dump(memos, f) }
-end
-
-def show_memo
-  memos = json_to_ruby
-  @memo = memos['memos'].find { |memo| memo['id'] == params[:id] }
-end
-
 namespace '/memos' do
   get '' do
     @memos = File.open('memos.json') { |f| JSON.parse(f.read) }
@@ -36,26 +23,25 @@ namespace '/memos' do
   end
 
   post '' do
-    id = SecureRandom.uuid
     memo = Memo.new(params[:title], params[:content])
-    memo.json_to_ruby << { id:, title: memo.title, content: memo.content }
-    # memos['memos'] << { id:, title: memo.title, content: memo.content }
-    write_file(memos)
+    memo.post_contents
     redirect '/memos'
   end
 
   get '/:id' do
-    show_memo
+    memos = File.open('memos.json') { |f| JSON.parse(f.read) }
+    @memo = memos['memos'].find { |memo| memo['id'] == params[:id] }
     erb :show
   end
 
   get '/:id/edit' do
-    show_memo
+    memos = File.open('memos.json') { |f| JSON.parse(f.read) }
+    @memo = memos['memos'].find { |memo| memo['id'] == params[:id] }
     erb :edit
   end
 
   patch '' do
-    memos = json_to_ruby
+    memos = File.open('memos.json') { |f| JSON.parse(f.read) }
     edited_data = { id: params[:id], title: params[:title], content: params[:content] }
     @memo = memos['memos'].map! { |memo| memo['id'] == params[:id] ? edited_data : memo }
     write_file(memos)
@@ -63,7 +49,7 @@ namespace '/memos' do
   end
 
   delete '/:id' do
-    memos = json_to_ruby
+    memos = File.open('memos.json') { |f| JSON.parse(f.read) }
     memo_index = memos['memos'].index { |memo| memo['id'] == params[:id] }
     memos['memos'].delete_at(memo_index) # .destroyができなかったのでrubyでmemos[]から削除。
     write_file(memos)
