@@ -3,14 +3,14 @@
     タイトル
   </div>
   <input type="hidden" name="_method" value="patch">
-  <input type="text" name="title" value="<%= @memo["title"] %>" class="box_title" placeholder="タイトルを入力してください(30文字以内)">
+  <input type="text" name="title" value="<%= @memo.title %>" class="box_title" placeholder="タイトルを入力してください(30文字以内)">
 
   <div>
     本文
   </div>
-  <textarea name="content" class="box_content" placeholder="内容を入力してください(1000文字以内)"><%= @memo["content"] %></textarea>
+  <textarea name="content" class="box_content" placeholder="内容を入力してください(1000文字以内)"><%= @memo.content %></textarea>
   <input type="hidden" name="_method" value="patch">
-  <input type="hidden" name="id" value="<%= @memo["id"] %>">
+  <input type="hidden" name="id" value="<%= @memo.id %>">
   <div class="button">
     <input type="submit" value="保存">
   </div>

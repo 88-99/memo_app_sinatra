@@ -2,21 +2,21 @@
   タイトル
 </div>
 <div class="box_title">
-  <%= escape_html(@memo["title"]) %>
+  <%= escape_html(@memo.title) %>
 </div>
 <div>
   本文
 </div>
 <div class="box_content">
-  <%= escape_html(@memo["content"]) %>
+  <%= escape_html(@memo.content) %>
 </div>
 
 <div class="link">
-  <a href="http://localhost:4567/memos/<%= @memo["id"] %>/edit">編集</a>
+  <a href="http://localhost:4567/memos/<%= @memo.id %>/edit">編集</a>
   <a href="http://localhost:4567/memos">戻る</a>
 </div>
 
-<form method="post" action="/memos/<%= @memo["id"] %>">
+<form method="post" action="/memos/<%= @memo.id %>">
   <input type="hidden" name="_method" value="delete">
   <div class="button">
     <input type="submit" value="削除">
