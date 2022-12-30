@@ -38,7 +38,7 @@ class Memo
   end
 
   def self.json_to_ruby
-    File.open('memos.json') { |f| JSON.parse(f.read) } # JSON.parse の第2引数にオプション symbolize_names: true を指定すると、ハッシュのキーを文字列ではなくシンボルにできる。
+    File.open('memos.json') { |f| JSON.parse(f.read) }
   end
 
   def write_file(memos)
@@ -46,7 +46,6 @@ class Memo
   end
 
   def self.show_memo(id)
-    # 特異=スタティック=クラスメソッドはインスタンスメソッドを呼べない。同じ特異メソッドは呼べる。
     memos = Memo.json_to_ruby
     memo = memos['memos'].find { |m| m['id'] == id } # == @idを書いても違う領域の@idを見てしまうので@idはnill。そのため引数でparams[:id]を渡す。
     Memo.new(memo['id'], memo['title'], memo['content'])
