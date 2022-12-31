@@ -7,6 +7,7 @@ require_relative 'memo'
 
 set :environment, :development
 
+# rubocop:disable Metrics/BlockLength
 namespace '/memos' do
   get '' do
     @memos = Memo.index
@@ -43,3 +44,4 @@ namespace '/memos' do
     redirect '/memos'
   end
 end
+# rubocop:enable Metrics/BlockLength
