@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
-require 'securerandom' # uuid
+require 'securerandom'
 
 class Memo
   attr_accessor :id, :title, :content
@@ -47,7 +47,7 @@ class Memo
 
   def self.show_memo(id)
     memos = Memo.json_to_ruby
-    memo = memos['memos'].find { |m| m['id'] == id } # == @idを書いても違う領域の@idを見てしまうので@idはnill。そのため引数でparams[:id]を渡す。
+    memo = memos['memos'].find { |m| m['id'] == id }
     Memo.new(memo['id'], memo['title'], memo['content'])
   end
 end
