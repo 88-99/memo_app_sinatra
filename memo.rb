@@ -2,6 +2,7 @@
 
 require 'json'
 require 'securerandom'
+require 'pg'
 
 class Memo
   attr_accessor :id, :title, :content
