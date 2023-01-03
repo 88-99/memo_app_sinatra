@@ -14,14 +14,14 @@ class Memo
   end
 
   def self.index
-    memos = Memo.json_to_ruby
-    memos['memos'].map { |memo| Memo.new(memo['id'], memo['title'], memo['content']) }
+    connection = PG.connect(dbname: 'memo')
+    memos = connection.exec('SELECT * FROM Memo')
+    memos.map { |memo| Memo.new(memo['id'], memo['title'], memo['content']) }
   end
 
   def create
-    memos = Memo.json_to_ruby
-    memos['memos'] << { id: @id, title: @title, content: @content }
-    write_file(memos)
+    connection = PG.connect(dbname: 'memo')
+    connection.exec('INSERT INTO Memo VALUES ($1, $2, $3)', [@id, @title, @content])
   end
 
   def update
