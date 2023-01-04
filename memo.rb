@@ -15,40 +15,28 @@ class Memo
 
   def self.index
     connection = PG.connect(dbname: 'memo')
-    memos = connection.exec('SELECT * FROM Memo')
+    memos = connection.exec('SELECT * FROM memos')
     memos.map { |memo| Memo.new(memo['id'], memo['title'], memo['content']) }
   end
 
   def create
     connection = PG.connect(dbname: 'memo')
-    connection.exec('INSERT INTO Memo VALUES ($1, $2, $3)', [@id, @title, @content])
+    connection.exec('INSERT INTO memos VALUES ($1, $2, $3)', [@id, @title, @content])
   end
 
   def update
-    memos = Memo.json_to_ruby
-    edited_data = { id: @id, title: @title, content: @content }
-    memos['memos'].map! { |memo| memo['id'] == @id ? edited_data : memo }
-    write_file(memos)
+    connection = PG.connect(dbname: 'memo')
+    connection.exec("UPDATE memos SET title = $1, content = $2 WHERE id = $3", [@title, @content, @id])
   end
 
-  def delete
-    memos = Memo.json_to_ruby
-    memo_index = memos['memos'].index { |memo| memo['id'] == @id }
-    memos['memos'].delete_at(memo_index)
-    write_file(memos)
-  end
-
-  def self.json_to_ruby
-    File.open('memos.json') { |f| JSON.parse(f.read) }
-  end
-
-  def write_file(memos)
-    File.open('memos.json', 'w') { |f| JSON.dump(memos, f) }
+  def self.delete(id)
+    connection = PG.connect(dbname: 'memo')
+    connection.exec('DELETE FROM memos WHERE id = $1',[id]).first
   end
 
   def self.show_memo(id)
-    memos = Memo.json_to_ruby
-    memo = memos['memos'].find { |m| m['id'] == id }
+    connection = PG.connect(dbname: 'memo')
+    memo = connection.exec('SELECT * FROM memos WHERE id = $1',[id]).first
     Memo.new(memo['id'], memo['title'], memo['content'])
   end
 end

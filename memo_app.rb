@@ -34,13 +34,12 @@ namespace '/memos' do
   end
 
   patch '' do
-    @memo = Memo.new(params[:id], params[:title], params[:content])
-    @memo.update
+    @memo = Memo.new(params[:id], params[:title], params[:content]).update
     redirect '/memos'
   end
 
   delete '/:id' do
-    Memo.show_memo(params[:id]).delete
+    Memo.delete(params[:id])
     redirect '/memos'
   end
 end
