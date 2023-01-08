@@ -1,53 +1,35 @@
 # frozen_string_literal: true
 
-require 'json'
-require 'securerandom'
+require 'pg'
 
 class Memo
   attr_accessor :id, :title, :content
 
   def initialize(id, title, content)
-    @id = id.nil? ? SecureRandom.uuid : id
+    @id = id
     @title = title
     @content = content
   end
 
-  def self.index
-    memos = Memo.json_to_ruby
-    memos['memos'].map { |memo| Memo.new(memo['id'], memo['title'], memo['content']) }
+  def self.index(conn)
+    memos = conn.exec('SELECT * FROM memos')
+    memos.map { |memo| Memo.new(memo['id'], memo['title'], memo['content']) }
   end
 
-  def create
-    memos = Memo.json_to_ruby
-    memos['memos'] << { id: @id, title: @title, content: @content }
-    write_file(memos)
+  def self.create(conn, id, title, content)
+    conn.exec_params('INSERT INTO memos VALUES ($1, $2, $3)', [id, title, content])
   end
 
-  def update
-    memos = Memo.json_to_ruby
-    edited_data = { id: @id, title: @title, content: @content }
-    memos['memos'].map! { |memo| memo['id'] == @id ? edited_data : memo }
-    write_file(memos)
+  def self.update(conn, title, content, id)
+    conn.exec_params('UPDATE memos SET title = $1, content = $2 WHERE id = $3', [title, content, id])
   end
 
-  def delete
-    memos = Memo.json_to_ruby
-    memo_index = memos['memos'].index { |memo| memo['id'] == @id }
-    memos['memos'].delete_at(memo_index)
-    write_file(memos)
+  def self.delete(conn, id)
+    conn.exec_params('DELETE FROM memos WHERE id = $1', [id]).first
   end
 
-  def self.json_to_ruby
-    File.open('memos.json') { |f| JSON.parse(f.read) }
-  end
-
-  def write_file(memos)
-    File.open('memos.json', 'w') { |f| JSON.dump(memos, f) }
-  end
-
-  def self.show_memo(id)
-    memos = Memo.json_to_ruby
-    memo = memos['memos'].find { |m| m['id'] == id }
+  def self.show_memo(conn, id)
+    memo = conn.exec_params('SELECT * FROM memos WHERE id = $1', [id]).first
     Memo.new(memo['id'], memo['title'], memo['content'])
   end
 end

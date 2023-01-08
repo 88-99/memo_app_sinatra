@@ -6,6 +6,7 @@ gem 'byebug'
 gem 'debug'
 gem 'erb_lint', require: false
 gem 'parser', '< 3.1.3.0'
+gem 'pg'
 gem 'rubocop-fjord', require: false
 gem 'sinatra'
 gem 'sinatra-contrib'
