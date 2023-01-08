@@ -3,6 +3,7 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'sinatra/namespace'
+require 'securerandom'
 require_relative 'memo'
 
 set :environment, :development
@@ -24,7 +25,7 @@ namespace '/memos' do
   end
 
   post '' do
-    Memo.create(conn, params[:title], params[:content])
+    Memo.create(conn, SecureRandom.uuid, params[:title], params[:content])
     redirect '/memos'
   end
 

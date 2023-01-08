@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'json'
-require 'securerandom'
 require 'pg'
 
 class Memo
@@ -18,8 +17,8 @@ class Memo
     memos.map { |memo| Memo.new(memo['id'], memo['title'], memo['content']) }
   end
 
-  def self.create(conn, title, content)
-    conn.exec_params('INSERT INTO memos VALUES ($1, $2, $3)', [SecureRandom.uuid, title, content])
+  def self.create(conn, id, title, content)
+    conn.exec_params('INSERT INTO memos VALUES ($1, $2, $3)', [id, title, content])
   end
 
   def self.update(conn, title, content, id)
