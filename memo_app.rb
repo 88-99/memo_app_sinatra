@@ -24,7 +24,7 @@ namespace '/memos' do
   end
 
   post '' do
-    Memo.new(nil, params[:title], params[:content]).create(conn)
+    Memo.create(conn, params[:title], params[:content])
     redirect '/memos'
   end
 
@@ -39,7 +39,7 @@ namespace '/memos' do
   end
 
   patch '' do
-    @memo = Memo.new(params[:id], params[:title], params[:content]).update(conn)
+    @memo = Memo.update(conn, params[:title], params[:content], params[:id])
     redirect '/memos'
   end
 

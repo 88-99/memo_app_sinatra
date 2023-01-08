@@ -8,7 +8,7 @@ class Memo
   attr_accessor :id, :title, :content
 
   def initialize(id, title, content)
-    @id = id.nil? ? SecureRandom.uuid : id
+    @id = id
     @title = title
     @content = content
   end
@@ -18,12 +18,12 @@ class Memo
     memos.map { |memo| Memo.new(memo['id'], memo['title'], memo['content']) }
   end
 
-  def create(conn)
-    conn.exec_params('INSERT INTO memos VALUES ($1, $2, $3)', [@id, @title, @content])
+  def self.create(conn, title, content)
+    conn.exec_params('INSERT INTO memos VALUES ($1, $2, $3)', [SecureRandom.uuid, title, content])
   end
 
-  def update(conn)
-    conn.exec_params('UPDATE memos SET title = $1, content = $2 WHERE id = $3', [@title, @content, @id])
+  def self.update(conn, title, content, id)
+    conn.exec_params('UPDATE memos SET title = $1, content = $2 WHERE id = $3', [title, content, id])
   end
 
   def self.delete(conn, id)
